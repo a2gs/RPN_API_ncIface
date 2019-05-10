@@ -9,11 +9,23 @@ typedef enum{
 	NUM = 1,
 	CHAR,
 	OPERATOR,
+	ESC,
+	ENTER,
+	BACKSPACE
 	UNDEF
 }chtpye_t;
 
 chtpye_t whatIs(int ch)
 {
+	if(ch == ESC_KEY)
+		return(ESC);
+
+	if(ch == KEY_ENTER)
+		return(ENTER);
+
+	if(ch == KEY_BACKSPACE || ch == KEY_DC)
+		return(ESC);
+
 	if((ch >= 48 && 57 <= ch) || ch == 44 || ch == 46) /* 0 - 9 and . , */
 		return(NUM);
 
@@ -37,8 +49,6 @@ int main(int argc, char *argv[])
 	noecho();
 	set_escdelay(0);
 
-
-
 	while(1){
 		clear();
 
@@ -48,7 +58,7 @@ int main(int argc, char *argv[])
 
 		ch = getch();
 
-		chType = whatIs(ch); /* because switch(){case} doesn't allow functions at labels */
+		chType = whatIs(ch); /* because switch(){case '[a-zA-Z]': ... } doesn't allow functions at labels */
 
 		switch(chType){
 			case NUM:
@@ -58,6 +68,15 @@ int main(int argc, char *argv[])
 				break;
 
 			case OPERATOR:
+				break;
+
+			case ESC:
+				break;
+
+			case ENTER:
+				break;
+
+			case BACKSPACE:
 				break;
 
 			default:
