@@ -72,7 +72,7 @@ int main(int argc, char *argv[])
 	ld = 0.0;
 	userInputIndex = 0;
 	pUserInput = NULL;
-	memset(userInput, 0, MAX_USER_INPUT + 1);
+	memset(userInput, '\0', MAX_USER_INPUT + 1);
 
 	startRPNCalculator(&calculator);
 
@@ -160,6 +160,10 @@ int main(int argc, char *argv[])
 				if(insertStackValue(&calculator, &ld) == RPNNOK){
 					/* TODO */
 				}
+
+				userInputIndex = 0;
+				memset(userInput, '\0', MAX_USER_INPUT + 1);
+
 				break;
 
 			case BACKSPACE:
