@@ -28,7 +28,7 @@ int getStack(rpn_t *calc, int pos, long double *d)
 {
 
 
-	return(RPNOK);
+	return(RPNNOK);
 }
 
 int swap(rpn_t *calc)

@@ -28,12 +28,12 @@ chtpye_t whatIs(int ch)
 		return(ENTER);
 
 	if(ch == KEY_BACKSPACE || ch == KEY_DC)
-		return(ESC);
+		return(BACKSPACE);
 
-	if((ch >= 48 && 57 <= ch) || ch == 44 || ch == 46) /* 0 - 9 and . , */
+	if((ch >= 48 && ch <= 57) || ch == 44 || ch == 46) /* 0 - 9 and . , */
 		return(NUM);
 
-	if((ch >= 65 && 90 <= ch) || (ch >= 97 && 122 <= ch)) /* A - Z || a - z */
+	if((ch >= 65 && ch <= 90) || (ch >= 97 && ch <= 122)) /* A - Z || a - z */
 		return(CHAR);
 
 	if(ch == 33 || ch == 42 || ch == 43 || ch == 45 || ch == 47 || ch == 33) /* * + - / ! */
@@ -46,6 +46,7 @@ int main(int argc, char *argv[])
 {
 #define MAX_USER_INPUT 100
 	int ch = 0;
+	unsigned int i = 0;
 	chtpye_t chType = 0;
 	char userInput[MAX_USER_INPUT + 1] = {'\0'};
 	unsigned int userInputIndex = 0;
@@ -55,6 +56,13 @@ int main(int argc, char *argv[])
 	rpn_t calculator;
 
 	initscr();
+
+	if((LINES < 24) || (COLS < 80)){
+		endwin();
+		printf("O terminal precisa ter no minimo 80x24\n");
+		return(-1);
+	}
+
 	keypad(stdscr, TRUE);
 	cbreak();
 	noecho();
@@ -71,11 +79,39 @@ int main(int argc, char *argv[])
 	while(getout != 1){
 		clear();
 
+		/* draw the screen */
+		mvprintw(0, 0, "Binary operations: + - * / 'pow' 'logx'");
 
-		/* desenha a tela */
+		mvprintw(2, 0, "Unary operations:");
+		mvprintw(3, 0, "!\tFactorial");
+		mvprintw(4, 0, "'sin'\tSin");
+		mvprintw(5, 0, "'cos'\tCossin");
+		mvprintw(6, 0, "'tg'\tTangent");
+		mvprintw(7, 0, "'loge'\tExponencial log");
+		mvprintw(8, 0, "'lg'\tDecimal log");
+		mvprintw(9, 0, "'1/x'\tInverse");
+
+		mvprintw(11, 0, "Stack operations:");
+		mvprintw(12, 0, "'DROP'");
+		mvprintw(13, 0, "'SWAP'");
+		mvprintw(14, 0, "'CLSSTACK'");
+
+		mvprintw(26, 0, "Input:");
+		mvprintw(26, 7, userInput);
+
+		mvprintw(LINES - 1, 0, "[ESC] Exit | [ENTER] Insert stack");
+
+		mvprintw(LINES - 1, 50, "STACK:");
+
+		for(i = 0; getStack(&calculator, i, &ld) != RPNNOK; i++){
+			mvprintw(LINES - 1 - i, 57, "%d) %.20Le", i, ld);
+		}
+		if(i == 0)
+			mvprintw(LINES - 1, 57, "<EMPTY>");
+
+		move(26, 7 + userInputIndex);
+
 		refresh();
-
-
 
 		ch = getch();
 
@@ -125,8 +161,11 @@ int main(int argc, char *argv[])
 				break;
 
 			case BACKSPACE:
-				userInput[userInputIndex] = '\0';
+				if(userInputIndex == 0)
+					continue;
+
 				userInputIndex--;
+				userInput[userInputIndex] = '\0';
 				break;
 
 			default:
