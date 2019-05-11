@@ -19,16 +19,23 @@ int insertStackOperator(rpn_t *calc, char op)
 
 int insertStackValue(rpn_t *calc, long double *d)
 {
+	if(calc->top == RPN_STACK_SIZE)
+		return(RPNNOK);
 
+	calc->stack[calc->top] = *d;
+	calc->top++;
 
 	return(RPNOK);
 }
 
 int getStack(rpn_t *calc, int pos, long double *d)
 {
+	if(pos >= RPN_STACK_SIZE)
+		return(RPNNOK);
 
+	*d = calc->stack[pos];
 
-	return(RPNNOK);
+	return(RPNOK);
 }
 
 int swap(rpn_t *calc)
