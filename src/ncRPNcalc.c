@@ -52,6 +52,7 @@ int main(int argc, char *argv[])
 	char *pUserInput = NULL;
 	long double ld = 0.0;
 	char getout = 0;
+	rpn_t calculator;
 
 	initscr();
 	keypad(stdscr, TRUE);
@@ -64,6 +65,8 @@ int main(int argc, char *argv[])
 	userInputIndex = 0;
 	pUserInput = NULL;
 	memset(userInput, 0, MAX_USER_INPUT + 1);
+
+	startRPNCalculator(&calculator);
 
 	while(getout != 1){
 		clear();
@@ -96,11 +99,11 @@ int main(int argc, char *argv[])
 					/* TODO: value converted erro */
 				}
 				if(ld != 0.0){
-					if(insertStackValue(&ld) == RPNNOK){
+					if(insertStackValue(&calculator, &ld) == RPNNOK){
 						/* TODO */
 					}
 				}
-				if(insertStackOperator(*pUserInput) == RPNNOK){
+				if(insertStackOperator(&calculator, *pUserInput) == RPNNOK){
 					/* TODO */
 				}
 
@@ -116,7 +119,7 @@ int main(int argc, char *argv[])
 					/* TODO: value converted erro */
 				}
 
-				if(insertStackValue(&ld) == RPNNOK){
+				if(insertStackValue(&calculator, &ld) == RPNNOK){
 					/* TODO */
 				}
 				break;

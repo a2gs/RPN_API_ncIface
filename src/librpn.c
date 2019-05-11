@@ -1,43 +1,51 @@
+#include <string.h>
 #include <math.h>
 
 #include "librpn.h"
 
-int insertStackOperator(char op)
+int startRPNCalculator(rpn_t *calc)
+{
+	memset(calc, 0, sizeof(rpn_t));
+
+	return(RPNOK);
+}
+
+int insertStackOperator(rpn_t *calc, char op)
 {
 
 
 	return(RPNOK);
 }
 
-int insertStackValue(long double *d)
+int insertStackValue(rpn_t *calc, long double *d)
 {
 
 
 	return(RPNOK);
 }
 
-int getStack(int pos, long double *d)
+int getStack(rpn_t *calc, int pos, long double *d)
 {
 
 
 	return(RPNOK);
 }
 
-int swap(void)
+int swap(rpn_t *calc)
 {
 
 
 	return(RPNOK);
 }
 
-int drop(void)
+int drop(rpn_t *calc)
 {
 
 
 	return(RPNOK);
 }
 
-int cleanStack(void)
+int cleanStack(rpn_t *calc)
 {
 
 
