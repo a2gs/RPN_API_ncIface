@@ -24,7 +24,7 @@ chtpye_t whatIs(int ch)
 	if(ch == ESC_KEY)
 		return(ESC);
 
-	if(ch == KEY_ENTER)
+	if(ch == KEY_ENTER || ch == 10)
 		return(ENTER);
 
 	if(ch == KEY_BACKSPACE || ch == KEY_DC)
