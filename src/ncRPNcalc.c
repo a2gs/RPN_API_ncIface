@@ -126,6 +126,8 @@ int main(int argc, char *argv[])
 				break;
 
 			case CHAR:
+				userInput[userInputIndex] = ch;
+				userInputIndex++;
 				break;
 
 			case OPERATOR:
