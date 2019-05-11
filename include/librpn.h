@@ -14,6 +14,7 @@ int startRPNCalculator(rpn_t *calc);
 int insertStackValue(rpn_t *calc, long double *d);
 int insertStackOperator(rpn_t *calc, char op);
 int getStack(rpn_t *calc, unsigned int pos, long double *d);
+int getStackLIFO(rpn_t *calc, unsigned int pos, long double *d);
 int swap(rpn_t *calc);
 int drop(rpn_t *calc);
 int cleanStack(rpn_t *calc);

@@ -42,6 +42,28 @@ chtpye_t whatIs(int ch)
 	return(UNDEF);
 }
 
+chtpye_t isStringOrNumber(char *str)
+{
+	chtpye_t init = UNDEF;
+	chtpye_t walker = UNDEF;
+	unsigned int i = 0;
+
+	init = whatIs(str[0]);
+
+	for(i = 1; str[i] != '\0'; i++){
+		walker = whatIs(str[i]);
+
+		if(walker == OPERATOR) /* Numbers with ending operator is allowed (like "98347.598735/". (strtold() will help us to this) */
+			walker = NUM;
+
+		if(init != walker)
+			return(UNDEF);
+	}
+
+	return(init);
+
+}
+
 int main(int argc, char *argv[])
 {
 #define MAX_USER_INPUT 100
@@ -53,6 +75,7 @@ int main(int argc, char *argv[])
 	char *pUserInput = NULL;
 	long double ld = 0.0;
 	char getout = 0;
+	chtpye_t inputed = UNDEF;
 	rpn_t calculator;
 
 	initscr();
@@ -103,9 +126,8 @@ int main(int argc, char *argv[])
 
 		mvprintw(LINES - 1, 50, "STACK:");
 
-		for(i = 0; getStack(&calculator, i, &ld) != RPNNOK; i++){
+		for(i = 0; getStackLIFO(&calculator, i, &ld) != RPNNOK; i++){
 			/* See NaN at lib */
-			/*mvprintw(LINES - 1 - i, 57, "%d) %.20Le", i, ld);*/
 			mvprintw(LINES - 1 - i, 57, "%d) %.20Lg", i, ld);
 		}
 		if(i == 0)
@@ -154,13 +176,28 @@ int main(int argc, char *argv[])
 				break;
 
 			case ENTER:
-				ld = strtold(userInput, NULL);
-				if((ld == HUGE_VALF || ld == HUGE_VALL || ld == 0) && errno == ERANGE){
-					/* TODO: value converted erro */
-				}
+				inputed = isStringOrNumber(userInput);
 
-				if(insertStackValue(&calculator, &ld) == RPNNOK){
-					/* TODO */
+				if(inputed == NUM){
+					/* if userInput a number ... */
+					ld = strtold(userInput, NULL);
+					if((ld == HUGE_VALF || ld == HUGE_VALL || ld == 0) && errno == ERANGE){
+						/* TODO: value converted erro */
+						continue;
+					}
+
+					if(insertStackValue(&calculator, &ld) == RPNNOK){
+						/* TODO */
+					}
+				}else if(inputed == CHAR){
+					if      (strcmp(userInput, "DROP"    ) == 0){
+						drop(&calculator);
+					}else if(strcmp(userInput, "SWAP"    ) == 0){
+						swap(&calculator);
+					}else if(strcmp(userInput, "CLSSTACK") == 0){
+						cleanStack(&calculator);
+					}
+				}else{
 				}
 
 				userInputIndex = 0;

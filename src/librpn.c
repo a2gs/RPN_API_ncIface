@@ -28,6 +28,16 @@ int insertStackValue(rpn_t *calc, long double *d)
 	return(RPNOK);
 }
 
+int getStackLIFO(rpn_t *calc, unsigned int pos, long double *d)
+{
+	if(pos >= RPN_STACK_SIZE || calc->top == 0 || pos >= calc->top)
+		return(RPNNOK);
+
+	*d = calc->stack[calc->top - 1 - pos];
+
+	return(RPNOK);
+}
+
 int getStack(rpn_t *calc, unsigned int pos, long double *d)
 {
 	if(pos >= RPN_STACK_SIZE || calc->top == 0 || pos >= calc->top)
@@ -40,21 +50,31 @@ int getStack(rpn_t *calc, unsigned int pos, long double *d)
 
 int swap(rpn_t *calc)
 {
+	long double sw = 0.0;
 
+	if(calc->top <= 1)
+		return(RPNNOK);
+
+	sw = calc->stack[calc->top - 1];
+	calc->stack[calc->top - 1] = calc->stack[calc->top - 2];
+	calc->stack[calc->top - 2] = sw;
 
 	return(RPNOK);
 }
 
 int drop(rpn_t *calc)
 {
+	if(calc->top == 0)
+		return(RPNNOK);
 
+	calc->stack[calc->top] = 0.0;
+	calc->top--;
 
 	return(RPNOK);
 }
 
 int cleanStack(rpn_t *calc)
 {
-
-
+	startRPNCalculator(calc);
 	return(RPNOK);
 }
