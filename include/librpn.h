@@ -5,8 +5,9 @@
 #define RPN_STACK_SIZE 100
 #endif
 
-int insertStack(double *d);
-int getStack(int pos, double *d);
+int insertStackValue(long double *d);
+int insertStackOperator(char op);
+int getStack(int pos, long double *d);
 int swap(void);
 int drop(void);
 int cleanStack(void);

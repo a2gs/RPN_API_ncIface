@@ -2,14 +2,21 @@
 
 #include "librpn.h"
 
-int insertStack(double *d)
+int insertStackOperator(char op)
 {
 
 
 	return(RPNOK);
 }
 
-int getStack(int pos, double *d)
+int insertStackValue(long double *d)
+{
+
+
+	return(RPNOK);
+}
+
+int getStack(int pos, long double *d)
 {
 
 
