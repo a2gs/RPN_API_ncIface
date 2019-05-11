@@ -30,7 +30,7 @@ int insertStackValue(rpn_t *calc, long double *d)
 
 int getStack(rpn_t *calc, unsigned int pos, long double *d)
 {
-	if(pos >= RPN_STACK_SIZE || calc->top == 0 || pos > calc->top)
+	if(pos >= RPN_STACK_SIZE || calc->top == 0 || pos >= calc->top)
 		return(RPNNOK);
 
 	*d = calc->stack[pos];

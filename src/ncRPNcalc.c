@@ -106,7 +106,7 @@ int main(int argc, char *argv[])
 		for(i = 0; getStack(&calculator, i, &ld) != RPNNOK; i++){
 			/* See NaN at lib */
 			/*mvprintw(LINES - 1 - i, 57, "%d) %.20Le", i, ld);*/
-			mvprintw(LINES - 1 - i, 57, "%d) %LG", i, ld);
+			mvprintw(LINES - 1 - i, 57, "%d) %.20Lg", i, ld);
 		}
 		if(i == 0)
 			mvprintw(LINES - 1, 57, "<EMPTY>");
