@@ -16,6 +16,7 @@ typedef enum{
 	ESC,
 	ENTER,
 	BACKSPACE,
+	DEL,
 	UNDEF
 }chtpye_t;
 
@@ -27,7 +28,7 @@ chtpye_t whatIs(int ch)
 	if(ch == KEY_ENTER || ch == '\n')
 		return(ENTER);
 
-	if(ch == KEY_BACKSPACE || ch == KEY_DC)
+	if(ch == KEY_BACKSPACE)
 		return(BACKSPACE);
 
 	if((ch >= 48 && ch <= 57) || ch == 44 || ch == 46) /* 0 - 9 and . , */
@@ -38,6 +39,9 @@ chtpye_t whatIs(int ch)
 
 	if(ch == 33 || ch == 42 || ch == 43 || ch == 45 || ch == 47 || ch == 33) /* * + - / ! */
 		return(OPERATOR);
+
+	if(ch == KEY_DC)
+		return(DEL);
 
 	return(UNDEF);
 }
@@ -76,7 +80,9 @@ int main(int argc, char *argv[])
 	long double ld = 0.0;
 	char getout = 0;
 	chtpye_t inputed = UNDEF;
+	WINDOW *operatiosWin = NULL, *stackWin = NULL;
 	rpn_t calculator;
+	int stackMaxLines = 0;
 
 	initscr();
 
@@ -95,46 +101,59 @@ int main(int argc, char *argv[])
 	ld = 0.0;
 	userInputIndex = 0;
 	pUserInput = NULL;
+	stackMaxLines = LINES-1;
 	memset(userInput, '\0', MAX_USER_INPUT + 1);
 
 	startRPNCalculator(&calculator);
 
+	operatiosWin = newwin(17, 41, 0, 0);
+	stackWin     = newwin(stackMaxLines, 70, 0, 45);
+
 	while(getout != 1){
 		clear();
+		wclear(stackWin);
 
 		/* draw the screen */
-		mvprintw(0, 0, "Binary operations: + - * / 'pow' 'logx'");
+		box(operatiosWin, 0, 0);
+		box(stackWin,     0, 0);
+		mvwprintw(operatiosWin, 1, 1, "Binary operations: + - * / 'pow' 'logx'");
 
-		mvprintw(2, 0, "Unary operations:");
-		mvprintw(3, 0, "!\tFactorial");
-		mvprintw(4, 0, "'sin'\tSin");
-		mvprintw(5, 0, "'cos'\tCossin");
-		mvprintw(6, 0, "'tg'\tTangent");
-		mvprintw(7, 0, "'loge'\tExponencial log");
-		mvprintw(8, 0, "'lg'\tDecimal log");
-		mvprintw(9, 0, "'1/x'\tInverse");
+		mvwprintw(operatiosWin, 3, 1, "Unary operations:");
+		mvwprintw(operatiosWin, 4, 1, "!\tFactorial");
+		mvwprintw(operatiosWin, 5, 1, "'sin'\tSin");
+		mvwprintw(operatiosWin, 6, 1, "'cos'\tCossin");
+		mvwprintw(operatiosWin, 7, 1, "'tg'\tTangent");
+		mvwprintw(operatiosWin, 8, 1, "'loge'\tExponencial log");
+		mvwprintw(operatiosWin, 9, 1, "'lg'\tDecimal log");
+		mvwprintw(operatiosWin, 10, 1, "'1/x'\tInverse");
 
-		mvprintw(11, 0, "Stack operations:");
-		mvprintw(12, 0, "'DROP'");
-		mvprintw(13, 0, "'SWAP'");
-		mvprintw(14, 0, "'CLSSTACK'");
+		mvwprintw(operatiosWin, 12, 1, "Stack operations:");
+		mvwprintw(operatiosWin, 13, 1, "'DROP'");
+		mvwprintw(operatiosWin, 14, 1, "'SWAP'");
+		mvwprintw(operatiosWin, 15, 1, "'CLSSTACK'");
 
-		mvprintw(26, 0, "Input:");
-		mvprintw(26, 7, userInput);
-
-		mvprintw(LINES - 1, 0, "[ESC] Exit | [ENTER] Insert stack");
-
-		mvprintw(LINES - 1, 50, "STACK:");
+		mvwprintw(stackWin, stackMaxLines - 2, 1, "STACK:");
 
 		for(i = 0; getStackLIFO(&calculator, i, &ld) != RPNNOK; i++){
-			/* See NaN at lib */
-			mvprintw(LINES - 1 - i, 57, "%d) %.20Lg", i, ld);
+			mvwprintw(stackWin, stackMaxLines - 2 - i, 8, "%d) %.20Lg", i, ld);
 		}
 		if(i == 0)
-			mvprintw(LINES - 1, 57, "<EMPTY>");
+			mvwprintw(stackWin, stackMaxLines - 2, 8, "<EMPTY>");
 
-		move(26, 7 + userInputIndex);
+		refresh();
+		wrefresh(stackWin);
 
+		mvprintw(LINES - 4, 0, "[ESC] Exit");
+		mvprintw(LINES - 3, 0, "[DEL] Clear input");
+		mvprintw(LINES - 2, 0, "[ENTER] Insert stack");
+
+		mvprintw(LINES - 1, 0, "Input:");
+		mvprintw(LINES - 1, 7, userInput);
+
+		move(LINES - 1, 7 + userInputIndex);
+
+		wrefresh(operatiosWin);
+		wrefresh(stackWin);
 		refresh();
 
 		ch = getch();
@@ -205,6 +224,12 @@ int main(int argc, char *argv[])
 
 				break;
 
+			case DEL:
+				userInputIndex = 0;
+				memset(userInput, '\0', MAX_USER_INPUT + 1);
+
+				break;
+
 			case BACKSPACE:
 				if(userInputIndex == 0)
 					continue;
@@ -218,8 +243,10 @@ int main(int argc, char *argv[])
 		}
 	}
 
-	endwin();
+	delwin(operatiosWin);
+	delwin(stackWin);
 	delwin(stdscr);
+	endwin();
 
 	return(0);
 }
