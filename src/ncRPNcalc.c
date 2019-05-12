@@ -125,7 +125,7 @@ int main(int argc, char *argv[])
 		mvwprintw(operatiosWin, 7, 1, "'tg'\tTangent");
 		mvwprintw(operatiosWin, 8, 1, "'loge'\tExponencial log");
 		mvwprintw(operatiosWin, 9, 1, "'lg'\tDecimal log");
-		mvwprintw(operatiosWin, 10, 1, "'1/x'\tInverse");
+		mvwprintw(operatiosWin, 10, 1, "'inv'\tInverse (1/x)");
 
 		mvwprintw(operatiosWin, 12, 1, "Stack operations:");
 		mvwprintw(operatiosWin, 13, 1, "'DROP'");
@@ -143,9 +143,9 @@ int main(int argc, char *argv[])
 		refresh();
 		wrefresh(stackWin);
 
-		mvprintw(LINES - 4, 0, "[ESC] Exit");
-		mvprintw(LINES - 3, 0, "[DEL] Clear input");
-		mvprintw(LINES - 2, 0, "[ENTER] Insert stack");
+		mvprintw(LINES - 5, 0, "[ESC] Exit");
+		mvprintw(LINES - 4, 0, "[DEL] Clear input");
+		mvprintw(LINES - 3, 0, "[ENTER] Insert stack");
 
 		mvprintw(LINES - 1, 0, "Input:");
 		mvprintw(LINES - 1, 7, userInput);
@@ -209,11 +209,11 @@ int main(int argc, char *argv[])
 						/* TODO */
 					}
 				}else if(inputed == CHAR){
-					if      (strcmp(userInput, "DROP"    ) == 0){
+					if      (strcasecmp(userInput, "DROP"    ) == 0){
 						drop(&calculator);
-					}else if(strcmp(userInput, "SWAP"    ) == 0){
+					}else if(strcasecmp(userInput, "SWAP"    ) == 0){
 						swap(&calculator);
-					}else if(strcmp(userInput, "CLSSTACK") == 0){
+					}else if(strcasecmp(userInput, "CLSSTACK") == 0){
 						cleanStack(&calculator);
 					}
 				}else{
