@@ -76,7 +76,7 @@ int main(int argc, char *argv[])
 	chtpye_t chType = 0;
 	char userInput[MAX_USER_INPUT + 1] = {'\0'};
 	unsigned int userInputIndex = 0;
-	char *pUserInput = NULL;
+	char *pUserInput;
 	long double ld = 0.0;
 	char getout = 0;
 	chtpye_t inputed = UNDEF;
@@ -100,7 +100,9 @@ int main(int argc, char *argv[])
 	getout = 0;
 	ld = 0.0;
 	userInputIndex = 0;
+	/*
 	pUserInput = NULL;
+	*/
 	stackMaxLines = LINES-1;
 	memset(userInput, '\0', MAX_USER_INPUT + 1);
 
@@ -176,17 +178,22 @@ int main(int argc, char *argv[])
 				break;
 
 			case OPERATOR:
+				userInput[userInputIndex] = ch;
+				userInputIndex++;
+
 				/* lets see if there is a number before the operator typed. strtold() help us to this */
 				ld = 0.0;
 				ld = strtold(userInput, &pUserInput);
 				if((ld == HUGE_VALF || ld == HUGE_VALL || ld == 0.0) && errno == ERANGE){
 					/* TODO: value converted erro */
 				}
-				if(ld != 0.0){
+
+				if(/*ld != 0.0*/ userInput[0] >= 48 && userInput[0] <= 57){
 					if(insertStackValue(&calculator, &ld) == RPNNOK){
 						/* TODO */
 					}
 				}
+
 				if(insertStackOperator(&calculator, pUserInput) == RPNNOK){
 					/* TODO */
 				}
