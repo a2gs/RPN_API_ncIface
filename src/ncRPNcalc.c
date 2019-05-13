@@ -177,8 +177,9 @@ int main(int argc, char *argv[])
 
 			case OPERATOR:
 				/* lets see if there is a number before the operator typed. strtold() help us to this */
+				ld = 0.0;
 				ld = strtold(userInput, &pUserInput);
-				if((ld == HUGE_VALF || ld == HUGE_VALL || ld == 0) && errno == ERANGE){
+				if((ld == HUGE_VALF || ld == HUGE_VALL || ld == 0.0) && errno == ERANGE){
 					/* TODO: value converted erro */
 				}
 				if(ld != 0.0){
