@@ -60,6 +60,7 @@ int doCalculation(long double d1, char *operation, long double d2, long double *
 	}else if(strcasecmp(operation, "") == 0){
 	*/
 	}else{
+		*opType = 0;
 		return(RPNNOK);
 	}
 
@@ -83,8 +84,13 @@ int insertStackOperator(rpn_t *calc, char *op)
 	if(calc->top == 0)
 		return(RPNNOK);
 
-	if(doCalculation(calc->stack[calc->top-1], op, calc->stack[calc->top-2], &answer, &opType) == RPNNOK)
-		return(RPNNOK);
+	if(calc->top == 1){
+		if(doCalculation(calc->stack[calc->top-1], op, 0.0, &answer, &opType) == RPNNOK)
+			return(RPNNOK);
+	}else{
+		if(doCalculation(calc->stack[calc->top-1], op, calc->stack[calc->top-2], &answer, &opType) == RPNNOK)
+			return(RPNNOK);
+	}
 
 	drop(calc);
 

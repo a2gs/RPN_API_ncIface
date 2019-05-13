@@ -190,6 +190,9 @@ int main(int argc, char *argv[])
 					/* TODO */
 				}
 
+				userInputIndex = 0;
+				memset(userInput, '\0', MAX_USER_INPUT + 1);
+
 				break;
 
 			case ESC:
