@@ -106,8 +106,8 @@ int main(int argc, char *argv[])
 
 	startRPNCalculator(&calculator);
 
-	operatiosWin = newwin(17, 41, 0, 0);
-	stackWin     = newwin(stackMaxLines, 70, 0, 45);
+	operatiosWin = newwin(17, 50, 0, 0);
+	stackWin     = newwin(stackMaxLines, 70, 0, 51);
 
 	while(getout != 1){
 		clear();
@@ -116,7 +116,7 @@ int main(int argc, char *argv[])
 		/* draw the screen */
 		box(operatiosWin, 0, 0);
 		box(stackWin,     0, 0);
-		mvwprintw(operatiosWin, 1, 1, "Binary operations: + - * / 'pow' 'logx'");
+		mvwprintw(operatiosWin, 1, 1, "Binary operations: + - * / 'powxy' 'logxy' 'Rxy'");
 
 		mvwprintw(operatiosWin, 3, 1, "Unary operations:");
 		mvwprintw(operatiosWin, 4, 1, "!\tFactorial");
@@ -124,8 +124,10 @@ int main(int argc, char *argv[])
 		mvwprintw(operatiosWin, 6, 1, "'cos'\tCossin");
 		mvwprintw(operatiosWin, 7, 1, "'tg'\tTangent");
 		mvwprintw(operatiosWin, 8, 1, "'loge'\tExponencial log");
-		mvwprintw(operatiosWin, 9, 1, "'lg'\tDecimal log");
+		mvwprintw(operatiosWin, 9, 1, "'lg10'\tDecimal log");
 		mvwprintw(operatiosWin, 10, 1, "'inv'\tInverse (1/x)");
+		mvwprintw(operatiosWin, 11, 1, "'pow2x'\tPower 2^x");
+		mvwprintw(operatiosWin, 12, 1, "'R'\tRoot (2)");
 
 		mvwprintw(operatiosWin, 12, 1, "Stack operations:");
 		mvwprintw(operatiosWin, 13, 1, "'DROP'");
@@ -184,7 +186,7 @@ int main(int argc, char *argv[])
 						/* TODO */
 					}
 				}
-				if(insertStackOperator(&calculator, *pUserInput) == RPNNOK){
+				if(insertStackOperator(&calculator, pUserInput) == RPNNOK){
 					/* TODO */
 				}
 
@@ -215,6 +217,8 @@ int main(int argc, char *argv[])
 						swap(&calculator);
 					}else if(strcasecmp(userInput, "CLSSTACK") == 0){
 						cleanStack(&calculator);
+					}else{
+						/* Operators */
 					}
 				}else{
 				}

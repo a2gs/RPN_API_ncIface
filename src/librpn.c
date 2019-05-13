@@ -1,7 +1,57 @@
 #include <string.h>
 #include <math.h>
+/* #include <tgmath.h> */
 
 #include "librpn.h"
+
+int doCalculation(long double d1, char *operation, long double d2, long double *answer)
+{
+	/* https://en.cppreference.com/w/c/numeric/math */
+	if(strcasecmp(operation, "+") == 0){
+		*answer = d1 + d2;
+	}else if(strcasecmp(operation, "-") == 0){
+		*answer = d1 - d2;
+	}else if(strcasecmp(operation, "*") == 0){
+		*answer = d1 * d2;
+	}else if(strcasecmp(operation, "/") == 0){
+		*answer = d1 / d2;
+	}else if(strcasecmp(operation, "powxy") == 0){
+		*answer = powl(d1, d2);
+	}else if(strcasecmp(operation, "logxy") == 0){
+		*answer = logl(d2)/logl(d1);
+	}else if(strcasecmp(operation, "!") == 0){
+		for(; d1 > 1; d1--){
+			*answer *= d1;
+		}
+	}else if(strcasecmp(operation, "sin") == 0){
+		*answer = sinl(d1);
+	}else if(strcasecmp(operation, "cos") == 0){
+		*answer = cosl(d1);
+	}else if(strcasecmp(operation, "tg") == 0){
+		*answer = tanl(d1);
+	}else if(strcasecmp(operation, "loge") == 0){
+		*answer = logl(d1);
+	}else if(strcasecmp(operation, "lg10") == 0){
+		*answer = log10l(d1);
+	}else if(strcasecmp(operation, "inv") == 0){
+		*answer = 1/d1;
+	}else if(strcasecmp(operation, "pow2x") == 0){
+		*answer = exp2l(d1);
+	}else if(strcasecmp(operation, "R") == 0){
+		*answer = sqrtl(d1);
+	}else if(strcasecmp(operation, "") == 0){
+	/*
+	}else if(strcasecmp(operation, "") == 0){
+	}else if(strcasecmp(operation, "") == 0){
+	*/
+	}else{
+		return(RPNNOK);
+	}
+
+	return(RPNOK);
+}
+
+/* --------------- */
 
 int startRPNCalculator(rpn_t *calc)
 {
@@ -10,8 +60,11 @@ int startRPNCalculator(rpn_t *calc)
 	return(RPNOK);
 }
 
-int insertStackOperator(rpn_t *calc, char op)
+int insertStackOperator(rpn_t *calc, char *op)
 {
+	if(calc->top == 0)
+		return(RPNNOK);
+
 
 
 	return(RPNOK);

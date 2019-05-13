@@ -54,7 +54,7 @@ lrpn:
 
 RPNiface: lrpn
 	@echo "=== client =================="
-	$(CC) -o $(BINPATH)/ncRPNcalc $(SOURCEPATH)/ncRPNcalc.c -I$(BINPATH) -L$(BINPATH) -lncurses -l$(LIB_RPN) $(CFLAGS)
+	$(CC) -o $(BINPATH)/ncRPNcalc $(SOURCEPATH)/ncRPNcalc.c -I$(BINPATH) -L$(BINPATH) -lncurses -l$(LIB_RPN) $(CFLAGS) -lm
 
 clean:
 	@echo "=== clean ==================="
