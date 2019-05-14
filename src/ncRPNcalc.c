@@ -236,9 +236,9 @@ int main(int argc, char *argv[])
 					else if(strcasecmp(userInput, "SWAP"    ) == 0) swap(&calculator);
 					else if(strcasecmp(userInput, "CLSSTACK") == 0) cleanStack(&calculator);
 
-					else if(strcasecmp(userInput, "pi") == 0) insertStackValue(&calculator, 3.14159265358979323846264338327950288419716939937510);
-					else if(strcasecmp(userInput, "e")  == 0) insertStackValue(&calculator, 2.71828182845904523536028747135266249775724709369995);
-					else if(strcasecmp(userInput, "c")  == 0) insertStackValue(&calculator, 299792458);
+					else if(strcasecmp(userInput, "pi") == 0) insertStackValue(&calculator, (long double)3.14159265358979323846264338327950288419716939937510);
+					else if(strcasecmp(userInput, "e")  == 0) insertStackValue(&calculator, (long double)2.71828182845904523536028747135266249775724709369995);
+					else if(strcasecmp(userInput, "c")  == 0) insertStackValue(&calculator, (long double)299792458.0);
 
 					else{
 						if(insertStackOperator(&calculator, userInput) == RPNNOK){
