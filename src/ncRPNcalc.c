@@ -197,7 +197,7 @@ int main(int argc, char *argv[])
 				ld = 0.0;
 				ld = strtold(userInput, &pUserInput);
 				if(errno != ERANGE && userInput[1] != '\0'){
-					if(insertStackValue(&calculator, &ld) == RPNNOK){
+					if(insertStackValue(&calculator, ld) == RPNNOK){
 						/* TODO */
 					}
 				}
@@ -227,16 +227,19 @@ int main(int argc, char *argv[])
 						continue;
 					}
 
-					if(insertStackValue(&calculator, &ld) == RPNNOK){
+					if(insertStackValue(&calculator, ld) == RPNNOK){
 						/* TODO */
 					}
 				}else if(inputed == CHAR){
+
 					if     (strcasecmp(userInput, "DROP"    ) == 0) drop(&calculator);
 					else if(strcasecmp(userInput, "SWAP"    ) == 0) swap(&calculator);
 					else if(strcasecmp(userInput, "CLSSTACK") == 0) cleanStack(&calculator);
-					else if(strcasecmp(userInput, "pi") == 0) insertStackValue(&calculator, "3.14159265358979323846264338327950288419716939937510");
-					else if(strcasecmp(userInput, "e")  == 0) insertStackValue(&calculator, "2.71828182845904523536028747135266249775724709369995");
-					else if(strcasecmp(userInput, "c")  == 0) insertStackValue(&calculator, "299792458");
+
+					else if(strcasecmp(userInput, "pi") == 0) insertStackValue(&calculator, 3.14159265358979323846264338327950288419716939937510);
+					else if(strcasecmp(userInput, "e")  == 0) insertStackValue(&calculator, 2.71828182845904523536028747135266249775724709369995);
+					else if(strcasecmp(userInput, "c")  == 0) insertStackValue(&calculator, 299792458);
+
 					else{
 						if(insertStackOperator(&calculator, userInput) == RPNNOK){
 						}

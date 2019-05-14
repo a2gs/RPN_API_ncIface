@@ -112,17 +112,17 @@ int insertStackOperator(rpn_t *calc, char *op)
 
 	drop(calc);
 
-	insertStackValue(calc, &answer);
+	insertStackValue(calc, answer);
 
 	return(RPNOK);
 }
 
-int insertStackValue(rpn_t *calc, long double *d)
+int insertStackValue(rpn_t *calc, long double d)
 {
 	if(calc->top == RPN_STACK_SIZE)
 		return(RPNNOK);
 
-	calc->stack[calc->top] = *d;
+	calc->stack[calc->top] = d;
 	calc->top++;
 
 	return(RPNOK);
