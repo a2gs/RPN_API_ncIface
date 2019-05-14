@@ -112,7 +112,7 @@ int main(int argc, char *argv[])
 
 	startRPNCalculator(&calculator);
 
-	operatiosWin = newwin(17, 50, 0, 0);
+	operatiosWin = newwin(24, 50, 0, 0);
 	stackWin     = newwin(stackMaxLines, 70, 0, 51);
 
 	while(getout != 1){
@@ -135,10 +135,15 @@ int main(int argc, char *argv[])
 		mvwprintw(operatiosWin, 11, 1, "'pow2x'\tPower 2^x");
 		mvwprintw(operatiosWin, 12, 1, "'R'\tRoot (2)");
 
-		mvwprintw(operatiosWin, 12, 1, "Stack operations:");
-		mvwprintw(operatiosWin, 13, 1, "'DROP'");
-		mvwprintw(operatiosWin, 14, 1, "'SWAP'");
-		mvwprintw(operatiosWin, 15, 1, "'CLSSTACK'");
+		mvwprintw(operatiosWin, 14, 1, "Stack operations:");
+		mvwprintw(operatiosWin, 15, 1, "'DROP'");
+		mvwprintw(operatiosWin, 16, 1, "'SWAP'");
+		mvwprintw(operatiosWin, 17, 1, "'CLSSTACK'");
+
+		mvwprintw(operatiosWin, 19, 1, "Constants:");
+		mvwprintw(operatiosWin, 20, 1, "Pi");
+		mvwprintw(operatiosWin, 21, 1, "e");
+		mvwprintw(operatiosWin, 22, 1, "c (speed light m/s)");
 
 		mvwprintw(stackWin, stackMaxLines - 2, 1, "STACK:");
 
@@ -229,6 +234,9 @@ int main(int argc, char *argv[])
 					if     (strcasecmp(userInput, "DROP"    ) == 0) drop(&calculator);
 					else if(strcasecmp(userInput, "SWAP"    ) == 0) swap(&calculator);
 					else if(strcasecmp(userInput, "CLSSTACK") == 0) cleanStack(&calculator);
+					else if(strcasecmp(userInput, "pi") == 0) insertStackValue(&calculator, "3.14159265358979323846264338327950288419716939937510");
+					else if(strcasecmp(userInput, "e")  == 0) insertStackValue(&calculator, "2.71828182845904523536028747135266249775724709369995");
+					else if(strcasecmp(userInput, "c")  == 0) insertStackValue(&calculator, "299792458");
 					else{
 						if(insertStackOperator(&calculator, userInput) == RPNNOK){
 						}
