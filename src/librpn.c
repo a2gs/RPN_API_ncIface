@@ -1,8 +1,40 @@
+#include <stdio.h>
 #include <string.h>
 #include <math.h>
 /* #include <tgmath.h> */
 
 #include "librpn.h"
+
+int calculationType(char *operation, char *opType)
+{
+	/* https://en.cppreference.com/w/c/numeric/math */
+	if     (strcasecmp(operation, "+")     == 0) *opType = 2;
+	else if(strcasecmp(operation, "-")     == 0) *opType = 2;
+	else if(strcasecmp(operation, "*")     == 0) *opType = 2;
+	else if(strcasecmp(operation, "/")     == 0) *opType = 2;
+	else if(strcasecmp(operation, "powxy") == 0) *opType = 2;
+	else if(strcasecmp(operation, "logxy") == 0) *opType = 2;
+	else if(strcasecmp(operation, "!")     == 0) *opType = 1;
+	else if(strcasecmp(operation, "sin")   == 0) *opType = 1;
+	else if(strcasecmp(operation, "cos")   == 0) *opType = 1;
+	else if(strcasecmp(operation, "tg")    == 0) *opType = 1;
+	else if(strcasecmp(operation, "loge")  == 0) *opType = 1;
+	else if(strcasecmp(operation, "lg10")  == 0) *opType = 1;
+	else if(strcasecmp(operation, "inv")   == 0) *opType = 1;
+	else if(strcasecmp(operation, "pow2x") == 0) *opType = 1;
+	else if(strcasecmp(operation, "R")     == 0) *opType = 1;
+	/*
+	}else if(strcasecmp(operation, "") == 0){
+	}else if(strcasecmp(operation, "") == 0){
+	}else if(strcasecmp(operation, "") == 0){
+	*/
+	else{
+		*opType = 0;
+		return(RPNNOK);
+	}
+
+	return(RPNOK);
+}
 
 int doCalculation(long double d1, char *operation, long double d2, long double *answer, char *opType)
 {
@@ -64,6 +96,8 @@ int doCalculation(long double d1, char *operation, long double d2, long double *
 		return(RPNNOK);
 	}
 
+	fprintf(stderr, "[%Lg] %s [%Lg] = [%Lg] (%u)\n", d1, operation, d2, *answer, *opType);
+
 	return(RPNOK);
 }
 
@@ -84,11 +118,13 @@ int insertStackOperator(rpn_t *calc, char *op)
 	if(calc->top == 0)
 		return(RPNNOK);
 
+	fprintf(stderr, "calc->top [%d]    ", calc->top);
+
 	if(calc->top == 1){
-		if(doCalculation(calc->stack[calc->top-1], op, 0.0, &answer, &opType) == RPNNOK)
+		if(doCalculation(0.0, op, calc->stack[calc->top-1], &answer, &opType) == RPNNOK)
 			return(RPNNOK);
 	}else{
-		if(doCalculation(calc->stack[calc->top-1], op, calc->stack[calc->top-2], &answer, &opType) == RPNNOK)
+		if(doCalculation(calc->stack[calc->top-2], op, calc->stack[calc->top-1], &answer, &opType) == RPNNOK)
 			return(RPNNOK);
 	}
 

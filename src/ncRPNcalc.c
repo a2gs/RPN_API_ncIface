@@ -52,7 +52,11 @@ chtpye_t isStringOrNumber(char *str)
 	chtpye_t walker = UNDEF;
 	unsigned int i = 0;
 
-	init = whatIs(str[0]);
+	/* Minus signal at the beginning means negative number, not a operation */
+	if(str[0] == '-')
+		init = NUM;
+	else
+		init = whatIs(str[0]);
 
 	for(i = 1; str[i] != '\0'; i++){
 		walker = whatIs(str[i]);
@@ -180,15 +184,14 @@ int main(int argc, char *argv[])
 			case OPERATOR:
 				userInput[userInputIndex] = ch;
 				userInputIndex++;
+				/* Minus signal at the beginning means negative number, not a operation */
+				if(userInputIndex == 1 && ch == '-')
+					continue;
 
 				/* lets see if there is a number before the operator typed. strtold() help us to this */
 				ld = 0.0;
 				ld = strtold(userInput, &pUserInput);
-				if((ld == HUGE_VALF || ld == HUGE_VALL || ld == 0.0) && errno == ERANGE){
-					/* TODO: value converted erro */
-				}
-
-				if(/*ld != 0.0*/ userInput[0] >= 48 && userInput[0] <= 57){
+				if(errno != ERANGE){
 					if(insertStackValue(&calculator, &ld) == RPNNOK){
 						/* TODO */
 					}
