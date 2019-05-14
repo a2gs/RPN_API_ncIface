@@ -141,7 +141,7 @@ int main(int argc, char *argv[])
 		mvwprintw(operatiosWin, 17, 1, "'CLSSTACK'");
 
 		mvwprintw(operatiosWin, 19, 1, "Constants:");
-		mvwprintw(operatiosWin, 20, 1, "Pi");
+		mvwprintw(operatiosWin, 20, 1, "pi");
 		mvwprintw(operatiosWin, 21, 1, "e");
 		mvwprintw(operatiosWin, 22, 1, "c (speed light m/s)");
 
