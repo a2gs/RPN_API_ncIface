@@ -215,8 +215,9 @@ int main(int argc, char *argv[])
 
 				if(inputed == NUM){
 					/* if userInput a number ... */
+					ld = 0.0;
 					ld = strtold(userInput, NULL);
-					if((ld == HUGE_VALF || ld == HUGE_VALL || ld == 0) && errno == ERANGE){
+					if(errno == ERANGE){
 						/* TODO: value converted erro */
 						continue;
 					}
@@ -225,14 +226,12 @@ int main(int argc, char *argv[])
 						/* TODO */
 					}
 				}else if(inputed == CHAR){
-					if      (strcasecmp(userInput, "DROP"    ) == 0){
-						drop(&calculator);
-					}else if(strcasecmp(userInput, "SWAP"    ) == 0){
-						swap(&calculator);
-					}else if(strcasecmp(userInput, "CLSSTACK") == 0){
-						cleanStack(&calculator);
-					}else{
-						/* Operators */
+					if     (strcasecmp(userInput, "DROP"    ) == 0) drop(&calculator);
+					else if(strcasecmp(userInput, "SWAP"    ) == 0) swap(&calculator);
+					else if(strcasecmp(userInput, "CLSSTACK") == 0) cleanStack(&calculator);
+					else{
+						if(insertStackOperator(&calculator, userInput) == RPNNOK){
+						}
 					}
 				}else{
 				}
