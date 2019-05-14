@@ -191,7 +191,7 @@ int main(int argc, char *argv[])
 				/* lets see if there is a number before the operator typed. strtold() help us to this */
 				ld = 0.0;
 				ld = strtold(userInput, &pUserInput);
-				if(errno != ERANGE){
+				if(errno != ERANGE && userInput[1] != '\0'){
 					if(insertStackValue(&calculator, &ld) == RPNNOK){
 						/* TODO */
 					}

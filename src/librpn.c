@@ -33,6 +33,7 @@ int calculationType(char *operation, char *opType)
 		return(RPNNOK);
 	}
 
+	fprintf(stderr, "opType[%d]\n", *opType);
 	return(RPNOK);
 }
 
@@ -78,6 +79,7 @@ int doCalculation(long double d1, char *operation, long double d2, long double *
 	*/
 	}else{
 		return(RPNNOK);
+		fprintf(stderr, "ERRO [%s] [%Lg]\n", operation, d1);
 	}
 
 	fprintf(stderr, "[%Lg] %s [%Lg] = [%Lg]\n", d1, operation, d2, *answer);
@@ -99,10 +101,13 @@ int insertStackOperator(rpn_t *calc, char *op)
 	long double answer = 0.0;
 	char opType = 0;
 
+	answer = 0.0;
+	opType = 0;
+
 	if(calc->top == 0)
 		return(RPNNOK);
 
-	fprintf(stderr, "calc->top [%d]    ", calc->top);
+	fprintf(stderr, "calc->top [%d] op[%s]\n", calc->top, op);
 
 	if(calculationType(op, &opType))
 		return(RPNNOK);
