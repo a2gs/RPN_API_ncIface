@@ -36,67 +36,51 @@ int calculationType(char *operation, char *opType)
 	return(RPNOK);
 }
 
-int doCalculation(long double d1, char *operation, long double d2, long double *answer, char *opType)
+int doCalculation(long double d1, char *operation, long double d2, long double *answer)
 {
 	/* https://en.cppreference.com/w/c/numeric/math */
 	if(strcasecmp(operation, "+") == 0){
 		*answer = d1 + d2;
-		*opType = 2;
 	}else if(strcasecmp(operation, "-") == 0){
 		*answer = d1 - d2;
-		*opType = 2;
 	}else if(strcasecmp(operation, "*") == 0){
 		*answer = d1 * d2;
-		*opType = 2;
 	}else if(strcasecmp(operation, "/") == 0){
 		*answer = d1 / d2;
-		*opType = 2;
 	}else if(strcasecmp(operation, "powxy") == 0){
 		*answer = powl(d1, d2);
-		*opType = 2;
 	}else if(strcasecmp(operation, "logxy") == 0){
 		*answer = logl(d2)/logl(d1);
-		*opType = 2;
 	}else if(strcasecmp(operation, "!") == 0){
 		for(; d1 > 1; d1--){
 			*answer *= d1;
 		}
-		*opType = 1;
 	}else if(strcasecmp(operation, "sin") == 0){
 		*answer = sinl(d1);
-		*opType = 1;
 	}else if(strcasecmp(operation, "cos") == 0){
 		*answer = cosl(d1);
-		*opType = 1;
 	}else if(strcasecmp(operation, "tg") == 0){
 		*answer = tanl(d1);
-		*opType = 1;
 	}else if(strcasecmp(operation, "loge") == 0){
 		*answer = logl(d1);
-		*opType = 1;
 	}else if(strcasecmp(operation, "lg10") == 0){
 		*answer = log10l(d1);
-		*opType = 1;
 	}else if(strcasecmp(operation, "inv") == 0){
 		*answer = 1/d1;
-		*opType = 1;
 	}else if(strcasecmp(operation, "pow2x") == 0){
 		*answer = exp2l(d1);
-		*opType = 1;
 	}else if(strcasecmp(operation, "R") == 0){
 		*answer = sqrtl(d1);
-		*opType = 1;
 	/*
 	}else if(strcasecmp(operation, "") == 0){
 	}else if(strcasecmp(operation, "") == 0){
 	}else if(strcasecmp(operation, "") == 0){
 	*/
 	}else{
-		*opType = 0;
 		return(RPNNOK);
 	}
 
-	fprintf(stderr, "[%Lg] %s [%Lg] = [%Lg] (%u)\n", d1, operation, d2, *answer, *opType);
+	fprintf(stderr, "[%Lg] %s [%Lg] = [%Lg]\n", d1, operation, d2, *answer);
 
 	return(RPNOK);
 }
@@ -120,18 +104,21 @@ int insertStackOperator(rpn_t *calc, char *op)
 
 	fprintf(stderr, "calc->top [%d]    ", calc->top);
 
-	if(calc->top == 1){
-		if(doCalculation(0.0, op, calc->stack[calc->top-1], &answer, &opType) == RPNNOK)
+	if(calculationType(op, &opType))
+		return(RPNNOK);
+
+	if(opType == 1){
+		if(doCalculation(calc->stack[calc->top - 1], op, 0.0, &answer) == RPNNOK)
 			return(RPNNOK);
-	}else{
-		if(doCalculation(calc->stack[calc->top-2], op, calc->stack[calc->top-1], &answer, &opType) == RPNNOK)
+	}else if(opType == 2){
+		if(doCalculation(calc->stack[calc->top - 2], op, calc->stack[calc->top - 1], &answer) == RPNNOK)
 			return(RPNNOK);
-	}
+
+		drop(calc);
+	}else
+		return(RPNNOK);
 
 	drop(calc);
-
-	if(opType == 2)
-		drop(calc);
 
 	insertStackValue(calc, &answer);
 
