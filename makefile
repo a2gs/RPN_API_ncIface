@@ -1,10 +1,5 @@
 #/* Andre Augusto Giannotti Scota (a2gs)
 # * andre.scota@gmail.com
-# *
-# *
-# *
-# *
-# *
 # */
 
 
